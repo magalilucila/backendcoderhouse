@@ -4,19 +4,22 @@ import { pid } from "process";
 
 const productsRouter = Router();
 
-productsRouter.get('/', async (req, res) => {
+productsRouter.get('/', async (req, res) =>{
     try {
         const { limit } = req.query;
         const products = await productManager.getProducts();
+
         if(limit){
             const limitedProducts = products.slice(0, limit);
             return res.json(limitedProducts);
         }
+
         return res.json(products)
+
     } catch(error) {
         console.log(error);
         res.send(`ERROR AL INTENTAR RECIBIR LOS PRODUCTOS`)
-    };
+    }
 });
 
 productsRouter.get('/:pid', async (req, res) => {
@@ -43,6 +46,7 @@ productsRouter.post('/', async (req, res) => {
 
 productsRouter.put('/:pid', async (req, res) => {
     const {pid} = req.params;
+
     try {
         const {title, description, price, thumbnail, code, stock, status = true, category} = req.body;
         const response = await productManager.updateProduct(pid, {title, description, price, thumbnail, code, stock, status, category});
@@ -62,6 +66,6 @@ productsRouter.delete('/:pid', async (req, res) => {
         console.log(error);
         res.send(`ERROR AL INTENTAR ELIMINAR EL PRODUCTO CON ID ${pid}`);
     }
-});
+})
 
-export {productsRouter};
+export { productsRouter }
